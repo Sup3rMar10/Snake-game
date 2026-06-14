@@ -1,0 +1,22 @@
+ Collision detection logic in /root/snake-game/snake_game/core/:
+
+  Wall Collisions (snake_game.py:66-70):
+  - Snake.check_collision() tests if head.x < 0 or head.x >= grid_size (left/right edges)
+  - Same for head.y (top/bottom)
+  - Returns True immediately on any boundary breach
+  - In SnakeGame.move_snake() (snake_game.py:181-189), this triggers game-over unless invincible power-up is active
+
+  Self Collisions (snake_game.py:72-74):
+  - head in self.body[1:] checks if head position matches any body segment after the head
+  - Returns True for self-collision 
+  - In move_snake(), ghost mode (can_pass_self) allows the check to pass silently (snake_game.py:185-186)
+  - Otherwise sets game_running = False
+
+  Food Collection (snake_game.py:191-197):
+  - SnakeGame checks snake.get_head() == food.get_position() after movement
+  - Equality uses Point.__eq__ which compares x/y values
+  - On match: snake.grow() (increments grow_segments), award 10 × points_multiplier, increment combo counter, call power_up_manager.on_food_collected()
+  - generate_food() ensures new food never spawns on snake.body or bonus_food.position
+  - Food collection does not trigger collision detection; the head simply occupies the same cell
+
+  All collision checks run in the main loop after snake.move() and before the next frame. Power-ups can suppress or modify outcomes.
