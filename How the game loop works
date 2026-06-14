@@ -1,0 +1,22 @@
+The game loop runs entirely on the client side in JavaScript using setInterval():
+
+  Core Loop (snake_game/static/js/game.js:452-454):
+  - startGameLoop() creates an interval calling update() every gameSpeed ms (100ms base)
+  - The interval is stored in this.gameLoop and cleared on pause/game-over
+
+  Update Cycle (snake_game/static/js/game.js:487-579):
+  1. Skip if paused or not running
+  2. Update animations (particles, bonus fruit sprites)
+  3. Apply power-up effects (magnet pulling food, mirror snake, speed changes)
+  4. Check/remove expired bonus food
+  5. Move snake head by current direction
+  6. Collision detection (walls/self) unless invincible/ghost mode
+  7. Check food collision → grow snake, award points, increment combo counter, possibly spawn bonus food
+  8. Otherwise pop tail to maintain length
+  9. Check bonus food collision → apply effect
+  10. Update mirror snake if mirror power-up active
+  11. Call draw() to render
+
+  Direction changes (snake_game/static/js/game.js:63-72): Input handlers block 180° reversals to prevent instant self-collision. Paused/running checks gate input processing.
+
+  Game-over (snake_game/static/js/game.js:581-583): Sets gameRunning=false and clears the interval.
