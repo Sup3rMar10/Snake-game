@@ -1,0 +1,24 @@
+ The client-server architecture is minimal and largely decoupled:
+
+  Server Side (Flask):
+  - snake_game/server/web_server.py:8 — SnakeGameServer serves static files and one route:
+    - GET / → renders index.html with color config
+    - GET /api/colors → returns the JSON color palette
+  - No game state, no WebSocket, no persistent sessions. Server is purely a static file + template host.
+
+  Client Side (Browser):
+  - All game logic lives in snake_game/static/js/game.js (~795 lines).
+  - Game state (snake, food, score, powerUps, etc.) is held entirely in-memory in the SnakeGame class.
+  - localStorage is used only for persisting highScore across page reloads.
+  - The game loop (setInterval) runs 100% client-side. No network calls during gameplay.
+
+  Communication:
+  - Server sends initial color theme on page load via template variable.
+  - Zero runtime API calls. The /api/colors endpoint is defined but never called from the client.
+
+  Implications:
+  - Game state is not shareable or recoverable.
+  - No cheating possible via server manipulation because the server knows nothing.
+  - Refreshing the page loses all progress except the high score.
+
+  In short: the server is a thin delivery vehicle; the browser owns the entire simulation.
