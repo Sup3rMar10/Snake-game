@@ -1,0 +1,22 @@
+The Snake Game has these main components:
+
+  Entry Points:
+  - run_game.py:1 - Launcher script
+  - snake_game/main.py:1 - Creates Settings and starts SnakeGameServer
+
+  Server Layer:
+  - snake_game/server/web_server.py:8 - Flask-based web server serving the game UI and /api/colors endpoint
+
+  Configuration:
+  - snake_game/config/settings.py:7 - Game settings (20x20 grid, 600x600 canvas, neon cyberpunk colors)
+
+  Core Game Logic:
+  - snake_game/core/snake_game.py:9 - Point class for coordinates
+  - snake_game/core/snake_game.py:22 - Snake class handles movement, direction changes, collision detection, and growth
+  - snake_game/core/snake_game.py:79 - Food class generates food positions
+  - snake_game/core/snake_game.py:105 - SnakeGame class orchestrates game state, scoring, bonus food spawning, and power-up integration
+  - snake_game/core/power_ups.py:10 - PowerUp class tracks active effects
+  - snake_game/core/power_ups.py:49 - PowerUpManager manages power-up lifecycle
+  - snake_game/core/bonus_food.py - Bonus food types (lightning, bomb, magnet, etc.)
+
+  The architecture follows a clean separation: web server → game controller → core entities (snake, food, power-ups).
