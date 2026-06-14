@@ -1,0 +1,24 @@
+Key files and purposes:
+
+  Entry:
+  - run_game.py:1 — CLI launcher; adds path and calls main()
+  - snake_game/main.py:8 — Creates Settings + SnakeGameServer, starts Flask on port 5000
+
+  Config:
+  - snake_game/config/settings.py:7 — Settings: port, grid (20×20), canvas (600×600), neon color palette
+
+  Server:
+  - snake_game/server/web_server.py:8 — SnakeGameServer: Flask app, serves / (index.html) and /api/colors; mounts static/templates
+  
+  Core Logic (snake_game/core/):
+  - snake_game.py:9 — Point: 2D coordinate with equality/hash
+  - snake_game.py:22 — Snake: body list, direction, move(), change_direction() (blocks reverses), grow(), check_collision()
+  - snake_game.py:79 — Food: random generation avoiding snake body
+  - snake_game.py:105 — SnakeGame: orchestrates state, score, bonus food spawning (every 5 foods), power-up integration, get_game_state()
+  - power_ups.py:10 — PowerUp: tracks type, duration/count, expiration
+  - power_ups.py:49 — PowerUpManager: activates effects (magnet, ghost, mirror, shield, speed, points), handles mirror snake, teleport/bomb
+  - bonus_food.py — Bonus food types (lightning, bomb, magnet, freeze, rainbow, mirror, shield, ghost)
+
+  Frontend:
+  - templates/index.html:1 — Canvas + UI, injects colors, loads game.js + helpers
+  - static/js/game.js:1 — SnakeGame class: full client-side game loop (setInterval), input, collisions, draw, power-up effects, particles; persists high score in localStorage
