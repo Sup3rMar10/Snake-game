@@ -1,0 +1,32 @@
+● The scoring system operates on two synchronized layers (Python backend, JavaScript frontend) with the same rules:
+
+  Points per Action:
+
+  - Regular food (snake_game.py:194, game.js:404/531): 10 × pointsMultiplier
+  pointsMultiplier starts at 1.0 and can be set by power-ups (rainbow → 2.0)
+  - Bonus food (snake_game.py:264, game.js:166): flat +50 regardless of multipliers
+  - Mirror snake collects food (snake_game.py:219, game.js:404): also awards 10 × pointsMultiplier (backend only; mirror logic not yet in JS)
+
+  High Score Tracking:
+
+  - In-memory: SnakeGame.high_score (Python) and SnakeGame.highScore (JS)
+  - Update occurs in three places:
+    a. start_game() — before resetting (snake_game.py:123)
+    b. reset_game() — same check (snake_game.py:142)
+    c. gameOver() — after death (game.js:478/585)
+  - Persistence: only the client saves to localStorage under key 'snakeHighScore' (game.js:480/587).
+  Server resets high_score to 0 on each new SnakeGame instance; no database or file storage.
+
+  Combo System (unrelated to score but affects bonus food spawning):
+  - consecutive_foods increments on every regular food eat
+  - At 5 consecutive foods a bonus fruit spawns; counter resets
+
+  The server can return current score and high_score via get_game_state(), but the live high-score value visible in the browser is purely local and lost on hard refresh unless saved in localStorage.
+
+✻ Cooked for 13s
+
+❯ Add obstacles to the snake game:                                                                                                                                                                                                         
+  - Static walls that appear after reaching certain scores                                                                                                                                                                                 
+  - The snake dies if it hits an obstacle                                                                                                                                                                                                  
+  - Obstacles should have strategic placement                                                                                                                                                                                              
+  Provide the implementation for the game logic and rendering 
